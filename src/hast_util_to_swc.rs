@@ -1470,7 +1470,7 @@ mod tests {
             .err()
             .unwrap()
             .to_string(),
-            "Could not parse esm with swc: Expected 'from', got 'numeric literal (1, 1)' (mdxjs-rs:swc)",
+            "Could not parse esm with swc: Expected 'from', got 'numeric literal' (mdxjs-rs:swc)",
             "should support an `MdxjsEsm` (w/ broken content)",
         );
 

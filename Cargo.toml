@@ -8,7 +8,7 @@ swc_core = { features = [
   "ecma_codegen",
   "ecma_parser",
   "ecma_visit",
-], version = "57" }
+], version = "58.0.4" }
 
 [dev-dependencies]
 pretty_assertions = "1"
@@ -27,5 +27,5 @@ keywords = ["compile", "markdown", "mdx"]
 license = "MIT"
 name = "mdxjs"
 repository = "https://github.com/wooorm/mdxjs-rs"
-rust-version = "1.56"
+rust-version = "1.88"
 version = "1.0.4"

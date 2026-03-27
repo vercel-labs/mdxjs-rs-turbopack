@@ -315,7 +315,7 @@ fn err_esm_invalid() {
             .err()
             .unwrap()
             .to_string(),
-        "1:8: Could not parse esm with swc: Expected 'from', got 'numeric literal (1, 1)' (mdxjs-rs:swc)",
+        "1:8: Could not parse esm with swc: Expected 'from', got 'numeric literal' (mdxjs-rs:swc)",
         "should crash on invalid code in ESM",
     );
 }
