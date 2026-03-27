@@ -109,7 +109,7 @@ fn parse_expression_core(
         ("", "")
     };
 
-    let (file, syntax, version) = create_config(format!("{}{}{}", prefix, value, suffix));
+    let (file, syntax, version) = create_config(format!("{prefix}{value}{suffix}"));
     let mut errors = vec![];
     let result = parse_file_as_expr(&file, syntax, version, None, &mut errors);
 

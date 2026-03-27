@@ -37,14 +37,14 @@ impl alloc::fmt::Debug for Node {
     /// Debug the wrapped struct.
     fn fmt(&self, f: &mut alloc::fmt::Formatter<'_>) -> alloc::fmt::Result {
         match self {
-            Node::Root(x) => write!(f, "{:?}", x),
-            Node::Element(x) => write!(f, "{:?}", x),
-            Node::Doctype(x) => write!(f, "{:?}", x),
-            Node::Comment(x) => write!(f, "{:?}", x),
-            Node::Text(x) => write!(f, "{:?}", x),
-            Node::MdxJsxElement(x) => write!(f, "{:?}", x),
-            Node::MdxExpression(x) => write!(f, "{:?}", x),
-            Node::MdxjsEsm(x) => write!(f, "{:?}", x),
+            Node::Root(x) => write!(f, "{x:?}"),
+            Node::Element(x) => write!(f, "{x:?}"),
+            Node::Doctype(x) => write!(f, "{x:?}"),
+            Node::Comment(x) => write!(f, "{x:?}"),
+            Node::Text(x) => write!(f, "{x:?}"),
+            Node::MdxJsxElement(x) => write!(f, "{x:?}"),
+            Node::MdxExpression(x) => write!(f, "{x:?}"),
+            Node::MdxjsEsm(x) => write!(f, "{x:?}"),
         }
     }
 }
