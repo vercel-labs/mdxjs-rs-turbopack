@@ -489,7 +489,7 @@ impl State<'_> {
                             span: DUMMY_SP,
                             ctxt: SyntaxContext::empty(),
                         };
-                        arr.body = Box::new(BlockStmtOrExpr::BlockStmt(block));
+                        *arr.body = BlockStmtOrExpr::BlockStmt(block);
                     }
                     arr.body.as_mut_block_stmt().unwrap()
                 }
@@ -577,7 +577,7 @@ impl State<'_> {
         let existing = scope.aliases.iter().find(|d| d.original == id);
 
         if let Some(alias) = existing {
-            alias.safe.to_string()
+            alias.safe.clone()
         } else {
             let name = format!("_component{}", scope.aliases.len());
             scope.aliases.push(Alias {
@@ -951,7 +951,7 @@ fn create_error_helper(development: bool, path: Option<String>) -> ModuleItem {
                         create_str_expression("\nIt’s referenced in your code at `"),
                         create_ident_expression("place"),
                         if let Some(path) = path {
-                            create_str_expression(&format!("` in `{}`", path))
+                            create_str_expression(&format!("` in `{path}`"))
                         } else {
                             create_str_expression("`")
                         },

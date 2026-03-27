@@ -247,7 +247,7 @@ pub fn mdast_util_to_hast(mdast: &mdast::Node) -> hast::Node {
                 tag_name: "li".into(),
                 properties: vec![(
                     "id".into(),
-                    hast::PropertyValue::String(format!("#fn-{}", safe_id)),
+                    hast::PropertyValue::String(format!("#fn-{safe_id}")),
                 )],
                 children: wrap(content, true),
                 position: None,
@@ -490,7 +490,7 @@ fn transform_footnote_reference(
             properties: vec![
                 (
                     "href".into(),
-                    hast::PropertyValue::String(format!("#fn-{}", safe_id)),
+                    hast::PropertyValue::String(format!("#fn-{safe_id}")),
                 ),
                 (
                     "id".into(),
@@ -498,7 +498,7 @@ fn transform_footnote_reference(
                         "fnref-{}{}",
                         safe_id,
                         if reuse_counter > 1 {
-                            format!("-{}", reuse_counter)
+                            format!("-{reuse_counter}")
                         } else {
                             String::new()
                         }

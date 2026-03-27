@@ -687,8 +687,7 @@ fn find_directives(
                         value => {
                             return Err(markdown::message::Message {
                                 reason: format!(
-                                    "Runtime must be either `automatic` or `classic`, not {}",
-                                    value
+                                    "Runtime must be either `automatic` or `classic`, not {value}"
                                 ),
                                 place: bytepos_to_point(comment.span.lo, location)
                                     .map(|p| Box::new(markdown::message::Place::Point(p))),
