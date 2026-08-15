@@ -15,11 +15,12 @@ use markdown::{
 };
 use swc_core::common::SyntaxContext;
 use swc_core::ecma::ast::{
-    AssignPat, BindingIdent, BlockStmt, Callee, CondExpr, Decl, DefaultDecl, ExportDefaultExpr,
-    ExportSpecifier, Expr, ExprOrSpread, FnDecl, Function, ImportDecl, ImportDefaultSpecifier,
-    ImportNamedSpecifier, ImportPhase, ImportSpecifier, JSXAttrOrSpread, JSXClosingElement,
-    JSXElement, JSXElementChild, JSXElementName, JSXOpeningElement, ModuleDecl, ModuleExportName,
-    ModuleItem, Param, Pat, ReturnStmt, SpreadElement, Stmt, VarDecl, VarDeclKind, VarDeclarator,
+    AssignPat, BindingIdent, Callee, CondExpr, Decl, DefaultDecl, ExportDefaultExpr,
+    ExportSpecifier, Expr, ExprOrSpread, FnDecl, Function, FunctionBody, ImportDecl,
+    ImportDefaultSpecifier, ImportNamedSpecifier, ImportPhase, ImportSpecifier, JSXAttrOrSpread,
+    JSXClosingElement, JSXElement, JSXElementChild, JSXElementName, JSXOpeningElement, ModuleDecl,
+    ModuleExportName, ModuleItem, Param, Pat, ReturnStmt, SpreadElement, Stmt, VarDecl,
+    VarDeclKind, VarDeclarator,
 };
 /// JSX runtimes (default: `JsxRuntime::Automatic`).
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
@@ -457,18 +458,18 @@ fn create_mdx_content(expr: Option<Expr>, has_internal_layout: bool) -> Vec<Modu
                 span: swc_core::common::DUMMY_SP,
             }],
             decorators: vec![],
-            body: Some(BlockStmt {
+            body: Some(FunctionBody {
                 stmts: vec![Stmt::Return(ReturnStmt {
                     arg: Some(Box::new(expr.unwrap_or_else(create_null_expression))),
                     span: swc_core::common::DUMMY_SP,
                 })],
                 span: swc_core::common::DUMMY_SP,
-                ctxt: SyntaxContext::empty(),
             }),
             is_generator: false,
             is_async: false,
             type_params: None,
             return_type: None,
+            this_param: None,
             span: swc_core::common::DUMMY_SP,
             ctxt: SyntaxContext::empty(),
         }),
@@ -496,18 +497,18 @@ fn create_mdx_content(expr: Option<Expr>, has_internal_layout: bool) -> Vec<Modu
                 span: swc_core::common::DUMMY_SP,
             }],
             decorators: vec![],
-            body: Some(BlockStmt {
+            body: Some(FunctionBody {
                 stmts: vec![Stmt::Return(ReturnStmt {
                     arg: Some(Box::new(result)),
                     span: swc_core::common::DUMMY_SP,
                 })],
                 span: swc_core::common::DUMMY_SP,
-                ctxt: SyntaxContext::empty(),
             }),
             is_generator: false,
             is_async: false,
             type_params: None,
             return_type: None,
+            this_param: None,
             span: swc_core::common::DUMMY_SP,
             ctxt: SyntaxContext::empty(),
         }),

@@ -226,7 +226,7 @@ impl State<'_> {
                     }
                 }
                 JSXElementChild::JSXText(text) => {
-                    let value = jsx_text_to_value(text.value.as_ref());
+                    let value = jsx_text_to_value(&text.value.to_string_lossy());
                     if !value.is_empty() {
                         result.push(create_str_expression(&value));
                     }

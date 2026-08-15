@@ -940,11 +940,9 @@ fn transform_paragraph(
                 index += 1;
                 continue;
             }
-            hast::Node::Text(node) => {
-                if inter_element_whitespace(node.value.as_bytes()) {
-                    index += 1;
-                    continue;
-                }
+            hast::Node::Text(node) if inter_element_whitespace(node.value.as_bytes()) => {
+                index += 1;
+                continue;
             }
             _ => {}
         }

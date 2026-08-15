@@ -16,13 +16,14 @@ use rustc_hash::FxHashSet;
 use swc_core::common::SyntaxContext;
 use swc_core::common::{util::take::Take, Span, DUMMY_SP};
 use swc_core::ecma::ast::{
-    ArrowExpr, AssignPatProp, BinaryOp, BindingIdent, BlockStmt, BlockStmtOrExpr, Callee,
+    ArrowExpr, ArrowFunctionBody, AssignPatProp, BinaryOp, BindingIdent, BlockStmt, Callee,
     CatchClause, ClassDecl, CondExpr, Decl, DoWhileStmt, Expr, ExprOrSpread, ExprStmt, FnDecl,
-    FnExpr, ForInStmt, ForOfStmt, ForStmt, Function, IfStmt, ImportDecl, ImportNamedSpecifier,
-    ImportPhase, ImportSpecifier, JSXElement, JSXElementName, KeyValuePatProp, KeyValueProp,
-    MemberExpr, MemberProp, ModuleDecl, ModuleExportName, ModuleItem, NewExpr, ObjectPat,
-    ObjectPatProp, Param, ParenExpr, Pat, Prop, PropOrSpread, ReturnStmt, Stmt, ThrowStmt,
-    UnaryExpr, UnaryOp, VarDecl, VarDeclKind, VarDeclarator, WhileStmt,
+    FnExpr, ForInStmt, ForOfStmt, ForStmt, Function, FunctionBody, IfStmt, ImportDecl,
+    ImportNamedSpecifier, ImportPhase, ImportSpecifier, JSXElement, JSXElementName,
+    KeyValuePatProp, KeyValueProp, MemberExpr, MemberProp, ModuleDecl, ModuleExportName,
+    ModuleItem, NewExpr, ObjectPat, ObjectPatProp, Param, ParenExpr, Pat, Prop, PropOrSpread,
+    ReturnStmt, Stmt, ThrowStmt, UnaryExpr, UnaryOp, VarDecl, VarDeclKind, VarDeclarator,
+    WhileStmt,
 };
 use swc_core::ecma::visit::{noop_visit_mut_type, VisitMut, VisitMutWith};
 
@@ -470,7 +471,7 @@ impl State<'_> {
 
         // Add statements to functions.
         if !statements.is_empty() {
-            let body: &mut BlockStmt = match func {
+            let body: &mut FunctionBody = match func {
                 Func::Expr(expr) => {
                     // Always exists if we have components in it.
                     expr.function.body.as_mut().unwrap()
@@ -480,18 +481,17 @@ impl State<'_> {
                     decl.function.body.as_mut().unwrap()
                 }
                 Func::Arrow(arr) => {
-                    if let BlockStmtOrExpr::Expr(expr) = &mut *arr.body {
-                        let block = BlockStmt {
+                    if let ArrowFunctionBody::Expr(expr) = &mut *arr.body {
+                        let block = FunctionBody {
                             stmts: vec![Stmt::Return(ReturnStmt {
                                 arg: Some(expr.take()),
                                 span: DUMMY_SP,
                             })],
                             span: DUMMY_SP,
-                            ctxt: SyntaxContext::empty(),
                         };
-                        *arr.body = BlockStmtOrExpr::BlockStmt(block);
+                        *arr.body = ArrowFunctionBody::FunctionBody(block);
                     }
-                    arr.body.as_mut_block_stmt().unwrap()
+                    arr.body.as_mut_function_body().unwrap()
                 }
             };
 
@@ -971,7 +971,7 @@ fn create_error_helper(development: bool, path: Option<String>) -> ModuleItem {
         function: Box::new(Function {
             params: parameters,
             decorators: vec![],
-            body: Some(BlockStmt {
+            body: Some(FunctionBody {
                 stmts: vec![Stmt::Throw(ThrowStmt {
                     arg: Box::new(Expr::New(NewExpr {
                         callee: Box::new(create_ident_expression("Error")),
@@ -986,12 +986,12 @@ fn create_error_helper(development: bool, path: Option<String>) -> ModuleItem {
                     span: DUMMY_SP,
                 })],
                 span: DUMMY_SP,
-                ctxt: SyntaxContext::empty(),
             }),
             is_generator: false,
             is_async: false,
             type_params: None,
             return_type: None,
+            this_param: None,
             span: DUMMY_SP,
             ctxt: SyntaxContext::empty(),
         }),
